@@ -1,3 +1,4 @@
+import { Role } from 'src/role/role.entity';
 import {
   Column,
   Entity,
@@ -14,13 +15,13 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @ManyToMany(() => Role, (role) => role.user, { cascade: true })
+  @ManyToMany(() => Role, (role) => role.users, { cascade: true })
   @JoinTable()
   roles: Role[];
 }
