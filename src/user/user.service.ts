@@ -38,20 +38,29 @@ export class UserService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.getUserById(id);
-    const roles = await this.roleRepository.find({
-      where: { id: In(updateUserDto.roles) },
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['roles'],
     });
 
-    if (user) {
-      user.name = updateUserDto.name;
-      user.email = updateUserDto.email;
-      user.password = updateUserDto.password;
-      user.roles = roles;
-      return this.userRepository.save(user);
+    if (!user) {
+      throw new NotFoundException(`User ${id} not found`);
     }
 
-    return null;
+    if (updateUserDto.name) {
+      user.name = updateUserDto.name;
+    }
+
+    if (updateUserDto.email) {
+      user.email = updateUserDto.email;
+    }
+
+    if (updateUserDto.roles) {
+      const roles = await this.roleRepository.findByIds(updateUserDto.roles);
+      user.roles = roles;
+    }
+
+    return this.userRepository.save(user);
   }
 
   async removeUser(id: number): Promise<void> {

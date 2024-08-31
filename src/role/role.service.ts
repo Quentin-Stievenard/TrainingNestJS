@@ -19,8 +19,8 @@ export class RoleService {
     return this.roleRepository.findOne({ where: { id } });
   }
 
-  async createRole(createRoleDto: CreateRoleDto): Promise<Role> {
-    const role = await this.roleRepository.create(createRoleDto);
+  async createRole(name: string): Promise<Role> {
+    const role = await this.roleRepository.create({ name });
 
     return this.roleRepository.save(role);
   }

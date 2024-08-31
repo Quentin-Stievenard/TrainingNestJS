@@ -9,16 +9,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RoleService } from 'src/role/role.service';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Controller('users')
 export class UserController {
-  constructor(
-    private userService: UserService,
-    private roleService: RoleService,
-  ) {}
+  constructor(private userService: UserService) {}
 
   @Get()
   getAllUser(): Promise<User[]> {

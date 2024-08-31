@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { Role } from './role/role.entity';
+import { RoleModule } from './role/role.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -11,8 +13,10 @@ import { Role } from './role/role.entity';
       type: 'sqlite',
       database: 'users_roles.sqlite',
       entities: [User, Role],
-      synchronize: true,
+      synchronize: true, // En développement uniquement
     }),
+    UserModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
